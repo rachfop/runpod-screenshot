@@ -1,0 +1,37 @@
+name: Daily Screenshot Workflow
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
+
+jobs:
+  take-screenshots:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # Specify the Python version
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests  # Install necessary Python packages
+
+    - name: Install shot-scraper
+      run: |
+        pip install shot-scraper
+        shot-scraper install
+
+    - name: Run shots.py
+      run: python shots.py
+
+    - name: Upload Screenshots
+      uses: actions/upload-artifact@v2
+      with:
+        name: screenshots
+        path: ./screenshots_*/  # Uploads the screenshots folder
