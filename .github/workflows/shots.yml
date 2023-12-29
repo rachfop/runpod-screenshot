@@ -15,12 +15,12 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'  # Specify the Python version
+        python-version: '3.8'
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests  # Install necessary Python packages
+        pip install requests
 
     - name: Install shot-scraper
       run: |
@@ -30,8 +30,10 @@ jobs:
     - name: Run shots.py
       run: python shots.py
 
-    - name: Upload Screenshots
-      uses: actions/upload-artifact@v2
-      with:
-        name: screenshots
-        path: ./screenshots_*/  # Uploads the screenshots folder
+    - name: Commit and Push Screenshots
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add ./screenshots_*/  # Add screenshots to staging
+        git commit -m "Add daily screenshots"
+        git push
