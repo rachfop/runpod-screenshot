@@ -36,4 +36,6 @@ jobs:
         git config --local user.name "GitHub Action"
         git add ./screenshots_*/  # Add screenshots to staging
         git commit -m "Add daily screenshots"
+        git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/rachfop/runpod-screenshot.git
         git push
+
